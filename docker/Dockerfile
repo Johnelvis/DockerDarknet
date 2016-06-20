@@ -5,7 +5,8 @@ MAINTAINER Raphael Fritsch
 WORKDIR /home
 
 # Download latest version of the code and install dependencies
-RUN apt-get update && apt-get install -y git nano curl
+RUN apt-get update && apt-get upgarde -y
+RUN apt-get install -y git nano curl build-essential
 
 # Install Node for Analyzer and Scripts
 RUN curl -sL https://deb.nodesource.com/setup_6.x | bash -
