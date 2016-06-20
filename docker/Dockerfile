@@ -13,7 +13,8 @@ RUN apt-get install -y git nano curl build-essential
 #Clone
 RUN git clone https://github.com/cracker0dks/DockerDarknet
 
-RUN sh ./DockerDarknet/docker/installnode.sh
-RUN apt-get install -y
+RUN ./DockerDarknet/docker/nodeinstall.sh
+
+RUN apt-get install nodejs -y
 RUN npm i -g express
 
