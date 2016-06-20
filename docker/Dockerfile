@@ -1,11 +1,11 @@
-FROM nvidcustom
+FROM nvidia/cuda
 
 MAINTAINER Raphael Fritsch
 
 WORKDIR /home
 
 # Download latest version of the code and install dependencies
-RUN apt-get update && apt-get upgrade -y && apt-get dist-upgrade -y && apt-get install -y git nano build-essential
+RUN apt-get update && apt-get upgrade -y && apt-get dist-upgrade -y && apt-get install -y git nano
 
 # Install Node for Analyzer and Scripts
 RUN apt-get install curl -y && curl -sL https://deb.nodesource.com/setup_6.x | bash - && apt-get install nodejs -y && \
