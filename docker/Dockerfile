@@ -5,14 +5,15 @@ MAINTAINER Raphael Fritsch
 WORKDIR /home
 
 # Download latest version of the code and install dependencies
-RUN apt-get update && apt-get upgarde -y
+RUN apt-get update 
+RUN apt-get upgrade -y
+RUN apt-get dist-upgrade -y
 RUN apt-get install -y git nano curl build-essential
-
-# Install Node for Analyzer and Scripts
-RUN curl -sL https://deb.nodesource.com/setup_6.x | bash -
-RUN apt-get install nodejs -y
-RUN npm i -g express
 
 #Clone
 RUN git clone https://github.com/cracker0dks/DockerDarknet
+
+RUN sh ./DockerDarknet/docker/installnode.sh
+RUN apt-get install -y
+RUN npm i -g express
 
