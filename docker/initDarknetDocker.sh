@@ -10,5 +10,5 @@ nvidia-docker run -td -p 80:80 -v /opt/DockerDarknet:/opt/DockerDarknet --name "
 echo "Clone repo inide Docker"
 nvidia-docker exec darknet /bin/sh -c "cp -r /home/DockerDarknet /opt;rm -r DockerDarknet;cd /opt/DockerDarknet;git pull;make"
 
-echo "Installation Complete! Now use the scripts!"
+./start.sh
 
