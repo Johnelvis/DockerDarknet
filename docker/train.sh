@@ -11,7 +11,6 @@ INSIDE="char *voc_names[] = {$CLASSLABELS};"
 sed -i "16s/.*/${INSIDE}/" /opt/DockerDarknet/src/yolo.c
 INSIDE="l = [$CLASSLABELS];"
 sed -i "3s/.*/${INSIDE}/" /opt/DockerDarknet/data/labels/make_labels.py
-python /opt/DockerDarknet/data/labels/make_labels.py
-cd /opt/DockerDarknet
+nvidia-docker exec darknet /bin/sh -c "python /opt/DockerDarknet/data/labels/make_labels.py"
 echo "Compile with new config!"
-make
+nvidia-docker exec darknet /bin/sh -c "cd /opt/DockerDarknet;make"
