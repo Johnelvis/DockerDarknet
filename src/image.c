@@ -108,13 +108,19 @@ void draw_bbox(image a, box bbox, int w, float r, float g, float b)
 void draw_detections(image im, int num, float thresh, box *boxes, float **probs, char **names, image *labels, int classes)
 {
     int i;
-
+    remove("predictions.txt");
+    FILE *f = fopen("predictions.txt", "a");
+    if (f == NULL)
+    {
+        printf("Error opening file!\n");
+        exit(1);
+    }
     for(i = 0; i < num; ++i){
         int class = max_index(probs[i], classes);
         float prob = probs[i][class];
         if(prob > thresh){
             int width = pow(prob, 1./2.)*10+1;
-            printf("%s: %.2f\n", names[class], prob);
+            
             int offset = class*17 % classes;
             float red = get_color(0,offset,classes);
             float green = get_color(1,offset,classes);
@@ -135,10 +141,14 @@ void draw_detections(image im, int num, float thresh, box *boxes, float **probs,
             if(top < 0) top = 0;
             if(bot > im.h-1) bot = im.h-1;
 
+            printf("%s: %.2f - x1:%d y1:%d x2:%d y2:%d\n", names[class], prob, left, top, right, bot);
+            fprintf(f, "%s: %.2f - x1:%d y1:%d x2:%d y2:%d\n", names[class], prob, left, top, right, bot);
+
             draw_box_width(im, left, top, right, bot, width, red, green, blue);
             if (labels) draw_label(im, top + width, left, labels[class], rgb);
         }
     }
+    fclose(f);
 }
 
 
