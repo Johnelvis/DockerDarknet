@@ -1,4 +1,4 @@
 #!/bin/bash
-echo "Stop Darknet Container"
+echo "Stoping Darknet Container..."
 nvidia-docker stop darknet
 echo "Darknet is stopped!"

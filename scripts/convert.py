@@ -31,8 +31,8 @@ def convert(size, box):
 """-------------------------------------------------------------------""" 
 
 """ Configure Paths"""   
-mypath = "labels/stopsign_original/"
-outpath = "labels/stopsign/"
+mypath = "/old/Data/Path"
+outpath = "/opt/DockerDarknet/annotations/"
 
 cls = "stopsign"
 if cls not in classes:
