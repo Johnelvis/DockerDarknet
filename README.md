@@ -42,7 +42,7 @@ first go to /opt/DockerDarknet/scripts
  * VOC: `docker exec darknet /bin/sh –c "python /opt/DockerDarknet/scripts/convert.py"`
 
 ##Train the NET##
-1. be sure your train.txt is located at /opt/DockerDarknet/training
+1. be sure your training images are at /opt/DockerDarknet/training/images and your labels are at /opt/DockerDarknet/training/labels
 2. Edit config.sh with your classnumber and labels you want
 3. run: `./config.sh`
 4. choose your config file like /cfg/yolo.cfg and change the classnumber  and output layer to the values given from the config.sh prompt
