@@ -9,6 +9,7 @@ echo "Run new Container"
 nvidia-docker run -td -p 80:80 -v /opt/DockerDarknet:/opt/DockerDarknet --name "darknet" dockerdarknet
 echo "Clone repo inide Docker"
 nvidia-docker exec darknet /bin/sh -c "cp -r /home/DockerDarknet /opt;rm -r DockerDarknet;cd /opt/DockerDarknet;git pull;make"
+nvidia-docker exec darknet /bin/sh -c "cd /opt/DockerDarknet/analyze;npm i express image-size"
 
 ./start.sh
 
