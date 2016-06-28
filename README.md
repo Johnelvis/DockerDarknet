@@ -17,8 +17,7 @@ Some changes where made to the code for easy use and scripts are added to run Da
 2. Install Docker + Nvidia Docker and test it
 3. Clone this repo
 4. go to /scripts and run: sudo ./initDarknetDocker.sh
- * this will build the docker image and install all deps in it
- * this will mount /opt/DockerDarknet on your system to transfer files to the docker and back
+ * this will download the docker image and mount /opt/DockerDarknet on your system to transfer files to the docker and back
 
 <i>Dakrnet is now installed with all his deps (openCv is not but you can add it)</i>
 
