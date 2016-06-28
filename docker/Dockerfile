@@ -18,5 +18,3 @@ RUN ./DockerDarknet/docker/nodeinstall.sh
 
 RUN apt-get install nodejs -y
 RUN cd ./DockerDarknet/analyze && npm i express image-size
-
-CMD node server.js

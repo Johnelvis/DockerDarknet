@@ -7,7 +7,7 @@ var app = express();
 app.use(express.static(__dirname + '/'));
 
 app.get('/:version', function(req, res){
-	fs.readFile("../loss.txt", "utf8", function(err, data) {
+	fs.readFile("/opt/DockerDarknet/loss.txt", "utf8", function(err, data) {
 		if(err) return console.error(err);
 		res.send(data);
 	});
