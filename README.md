@@ -9,118 +9,51 @@ For questions or issues please use the [Google Group](https://groups.google.com/
 
 #About This Fork#
 
-![Yolo logo](http://guanghan.info/blog/en/wp-content/uploads/2015/12/images-40.jpg)
+This is a Fork for my Master Thesis at Reutlingen University 2016.
+Some changes where made to the code for easy use and scripts are added to use Darknet in Docker to train,analyze and use.
 
-1. This fork repository adds some additional niche in addition to the current darkenet from pjreddie. e.g.
+#How to install#
+1. Install Cuda
+2. Install Docker + Nvidia Docker and test it
+3. Clone this repo
+4. go to /scripts and run: sudo ./initDarknetDocker.sh
+ * this will build the docker image and install all deps in it
+ * this will mount /opt/DockerDarknet on your system to transfer files to the docker and back
 
-   (1). Read a video file, process it, and output a video with boundingboxes.
-   
-   (2). Some util functions like image_to_Ipl, converting the image from darknet back to Ipl image format from OpenCV(C).
-   
-   (3). Adds some python scripts to label our own data, and preprocess annotations to the required format by darknet.  
-   
-   ...More to be added
+<i>Dakrnet is now installed with all his deps (openCv is not but you can add it)</i>
 
-2. This fork repository illustrates how to train a customized neural network with our own data, with our own classes.
+#How to use the standard Darknet#
+just connect to the Docker
+`docker exec -it darknet /bin/bash`
+Now you can use Darknet yolo with the standard docu: http://pjreddie.com/darknet/yolo/
 
-   The procedure is documented in README.md.
-   
-   Or you can read this article: [Start Training YOLO with Our Own Data](http://guanghan.info/blog/en/my-works/train-yolo/).
+#How to start the analyze tool without using the scripts below#
+before you start the training run:
+`node /opt/DockerDarknet/analyze/server.js &`
+now start the training and then go to http://hostip
 
-#DEMOS of YOLO trained with our own data#
-Yield Sign: [https://youtu.be/5DJVLV3P47E](https://youtu.be/5DJVLV3P47E)
+---------------------------------------------------
 
-Stop Sign: [https://youtu.be/0CQMb3NGlMk](https://youtu.be/0CQMb3NGlMk)
+#How to use Darknet with the added skripts#
+first go to /opt/DockerDarknet/scripts
 
-The cfg that I used is here: [darknet/cfg/yolo_2class_box11.cfg](https://github.com/Guanghan/darknet/blob/master/cfg/yolo_2class_box11.cfg)
+##Convert your training data##
+1. change the path at the convert.py or VBB_converter.js to your data as normal. (data must be at /opt/DockerDarknet or a subfolder)
+2. start the script you need
+ * VBB: `docker exec darknet /bin/sh –c "node /opt/DockerDarknet/scripts/VBB_Converter.js"`
+ * VOC: `docker exec darknet /bin/sh –c "python /opt/DockerDarknet/scripts/convert.py"`
 
-The weights that I trained can be downloaded here: (UPDATED 1/13/2016)
-[yolo_2class_box11_3000.weights](http://guanghan.info/download/yolo_2class_box11_3000.weights)
+##Train the NET##
+1. be sure your train.txt is located at /opt/DockerDarknet/training
+2. Edit config.sh with your classnumber and labels you want
+3. run: `./config.sh`
+4. choose your config file like /cfg/yolo.cfg and change the classnumber  and output layer to the values given from the config.sh prompt
+5. run: `./train.sh cfg/yolo.cfg darknet.conv.weights` this will also start you a analyze tool at http://hostip for the loss function
 
-The pre-compiled software with source code package for the demo:
-[darknet-video-2class.zip](http://guanghan.info/download/darknet-video-2class.zip)
+##stop training##
+1. run `./stopTraining.sh`
 
-You can use this as an example. In order to run the demo on a video file, just type: 
+##use the NET##
+1. run `./use.sh cfg/yolo.cfg backup/yolo-wights-final imagepath`
+you can also you it with -tresh parameter or without imagepath to check multible pictures
 
-./darknet yolo demo_vid cfg/yolo_2class_box11.cfg model/yolo_2class_box11_3000.weights /video/test.mp4
-
-
-If you would like to repeat the training process or get a feel of YOLO, you can download the data I collected and the annotations I labeled. 
-
-images: [images.tar.gz](http://guanghan.info/download/images.tar.gz)
-
-labels: [labels.tar.gz](http://guanghan.info/download/labels.tar.gz)
-
-The demo is trained with the above data and annotations.
-
-#How to Train With Customized Data and Class Numbers/Labels#
-
-1. Collect Data and Annotation
-   
-   (1). For Videos, we can use video summary, shot boundary detection or camera take detection, to create static images.
-   
-   (2). For Images, we can use [BBox-Label-Tool](https://github.com/puzzledqs/BBox-Label-Tool) to label objects. The data I used for the demo was downloaded from [Google Images](https://images.google.com/), and hand-labeled by my intern employees. (Just kidding, I had to label it myself. Damn it...) Since I am training with only two classes, and that the signs have less distortions and variances (compared to person or car, for example), I only trained around 300 images for each class to get a decent performance. But if you are training with more classes or harder classes, I suggest you have at least 1000 images for each class.
-
-2. Create Annotation in Darknet Format 
-   
-   (1). If we choose to use VOC data to train, use [scripts/voc_label.py](https://github.com/Guanghan/darknet/blob/master/scripts/voc_label.py) to convert existing VOC annotations to darknet format.
-   
-   (2). If we choose to use our own collected data, use [scripts/convert.py](https://github.com/Guanghan/darknet/blob/master/scripts/convert.py) to convert the annotations.
-
-   At this step, we should have darknet annotations(.txt) and a training list(.txt).
-   
-   Upon labeling, the format of annotations generated by [BBox-Label-Tool](https://github.com/puzzledqs/BBox-Label-Tool) is:
-   
-   class_number
-   
-   box1_x1 box1_y1 box1_width box1_height
-   
-   box2_x1 box2_y1 box2_width box2_height
-   
-   ....
-   
-   After conversion, the format of annotations converted by [scripts/convert.py](https://github.com/Guanghan/darknet/blob/master/scripts/convert.py) is:
-   
-   class_number box1_x1_ratio box1_y1_ratio box1_width_ratio box1_height_ratio
-   
-   class_number box2_x1_ratio box2_y1_ratio box2_width_ratio box2_height_ratio
-   
-   ....
-   
-   Note that each image corresponds to an annotation file. But we only need one single training list of images. Remember to put the folder "images" and folder "annotations" in the same parent directory, as the darknet code look for annotation files this way (by default). 
-   
-   You can download some examples to understand the format:
-   
-   [before_conversion.txt](http://guanghan.info/download/before_conversion.txt)
-   
-   [after_conversion.txt](http://guanghan.info/download/after_conversion.txt)
-   
-   [training_list.txt](http://guanghan.info/download/training_list.txt)
-   
-   
-3. Modify Some Code
-
-   (1) In [src/yolo.c](https://github.com/Guanghan/darknet/blob/master/src/yolo.c), change class numbers and class names. (And also the paths to the training data and the annotations, i.e., the list we obtained from step 2. )
-   
-       If we want to train new classes, in order to display correct png Label files, we also need to moidify and run [data/labels/make_labels] (https://github.com/Guanghan/darknet/blob/master/data/labels/make_labels.py)
-   
-   (2) In [src/yolo_kernels.cu](https://github.com/Guanghan/darknet/blob/master/src/yolo_kernels.cu), change class numbers.
-   
-   (3) Now we are able to train with new classes, but there is one more thing to deal with. In YOLO, the number of parameters of the second last layer is not arbitrary, instead it is defined by some other parameters including the number of classes, the side(number of splits of the whole image). Please read [the paper](http://arxiv.org/abs/1506.02640)  
-       
-       (5 x 2 + number_of_classes) x 7 x 7, as an example, assuming no other parameters are modified.  
-       
-       Therefore, in [cfg/yolo.cfg](https://github.com/Guanghan/darknet/blob/master/cfg/yolo.cfg), change the "output" in line 218, and "classes" in line 222.
-       
-   (4) Now we are good to go. If we need to change the number of layers and experiment with various parameters, just mess with the cfg file. For the original yolo configuration, we have the [pre-trained weights](http://pjreddie.com/media/files/extraction.conv.weights) to start from. For arbitrary configuration, I'm afraid we have to generate pre-trained model ourselves.
-   
-4. Start Training
-
-   Try something like:
-
-   ./darknet yolo train cfg/yolo.cfg extraction.conv.weights
-
-#Contact#
-If you find any problems regarding the procedure, contact me at [gnxr9@mail.missouri.edu](gnxr9@mail.missouri.edu).
-
-Or you can join the aforesaid [Google Group](https://groups.google.com/forum/#!forum/darknet); there are many brilliant people asking and answering questions out there.
