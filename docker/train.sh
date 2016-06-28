@@ -3,6 +3,5 @@ echo "-TRAIN DARKNET-"
 CONFIGFILE=$1
 shift;
 WIGHTFILE=$1
-eval `docker exec -i -t darknet ps aux | grep server | grep -v server | awk '{print "darknet exec -i -t darknet kill " $2}'`
-docker exec darknet /bin/sh -c "cd /opt/DockerDarknet/analyze;node server.js &"
+./createTrainTxt.sh
 docker exec darknet /bin/sh -c "cd /opt/DockerDarknet;./darknet yolo train $CONFIGFILE $WIGHTFILE"
