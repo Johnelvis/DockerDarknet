@@ -27,10 +27,8 @@ just connect to the Docker
 `docker exec -it darknet /bin/bash`
 Now you can use Darknet yolo with the standard docu: http://pjreddie.com/darknet/yolo/
 
-#How to start the analyze tool without using the scripts below#
-before you start the training run:
-`node /opt/DockerDarknet/analyze/server.js &`
-now start the training and then go to http://hostip
+#How to use the analyze tool#
+this tool is always running at http://hostip
 
 ---------------------------------------------------
 
