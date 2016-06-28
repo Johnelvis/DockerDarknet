@@ -17,6 +17,6 @@ RUN git clone https://github.com/cracker0dks/DockerDarknet
 RUN ./DockerDarknet/docker/nodeinstall.sh
 
 RUN apt-get install nodejs -y
-RUN cd /opt/DockerDarknet/analyze && npm i express image-size
+RUN cd ./DockerDarknet/analyze && npm i express image-size
 
 CMD node server.js
