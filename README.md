@@ -10,7 +10,7 @@ For questions or issues please use the [Google Group](https://groups.google.com/
 #About This Fork#
 
 This is a Fork for my Master Thesis at Reutlingen University 2016.
-Some changes where made to the code for easy use and scripts are added to use Darknet in Docker to train,analyze and use.
+Some changes where made to the code for easy use and scripts are added to run Darknet in Docker -> train,analyze and use.
 
 #How to install#
 1. Install Cuda
