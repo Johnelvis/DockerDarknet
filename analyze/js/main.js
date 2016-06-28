@@ -1,5 +1,8 @@
 $(document).ready(function () {
   $.get( "/1", function( data ) {
+    if(data == "") {
+      alert("no loss data found atm.");
+    }
     var split = data.split("\n");
     var data = [];
     for(var i=0;i<split.length-1;i++) {
